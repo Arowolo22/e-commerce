@@ -8,6 +8,18 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 const App = () => {
   return (
@@ -23,6 +35,7 @@ const App = () => {
           {/* <Route path="/home" element={<Home />} /> */}
         </Routes>
       </Router>
+      <ScrollToTop />
     </>
   );
 };
