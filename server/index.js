@@ -1,23 +1,28 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
-import productRoutes from "./routes/product.route.js";
-import { connectDB } from "./model/db.js";
+import dotenv from "dotenv";
+import { connectDB } from "./config/db.js";
+import productRoutes from "./routes/productRoute.js";
+// import cartRoutes from "./routes/cartRoutes.js";
+// import orderRoutes from "./routes/orderRoutes.js";
+
+dotenv.config();
 const app = express();
+
 app.use(cors());
 app.use(express.json());
-dotenv.config();
 
-// MongoDB connection
 connectDB();
+
+app.use("/api/products", productRoutes);
+// app.use("/api/cart", cartRoutes);
+// app.use("/api/orders", orderRoutes);
+
+app.get("/", (req, res) => {
+  res.send("E-commerce API running");
+});
+
 const PORT = process.env.PORT || 5000;
-
-app.use("/api", productRoutes);
-app.use("/", (req, res) => {
-   res.send("Welcome to the Product API");
-});
-
 app.listen(PORT, () => {
-   console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
-
