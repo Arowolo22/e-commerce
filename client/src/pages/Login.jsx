@@ -27,7 +27,7 @@ const Login = () => {
          navigate("/home");
       } catch (err) {
          setError(err.message);
-         console.log("Login Failed");
+         console.log("");
       } finally {
          setLoading(false);
       }
