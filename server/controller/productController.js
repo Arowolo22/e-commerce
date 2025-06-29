@@ -15,8 +15,16 @@ export const createProduct = async (req, res) => {
 // Get all products
 export const getProducts = async (req, res) => {
   try {
-    // Find all products in the database
-    const products = await Product.find();
+    const { category } = req.query;
+    let query = {};
+
+    // If category is specified, filter by category
+    if (category && category !== "all") {
+      query.category = category;
+    }
+
+    // Find products based on the query
+    const products = await Product.find(query);
     res.json(products); // Return the list of products
   } catch (err) {
     res.status(500).json({ error: err.message });
