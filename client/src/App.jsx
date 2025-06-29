@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import NotFound from "./pages/NotFound";
+import PrivateRoute from "./components/PrivateRoute";
 
 const ScrollToTop = () => {
    const { pathname } = useLocation();
@@ -16,23 +18,30 @@ const ScrollToTop = () => {
    return null;
 };
 
-const App = () => {
-  return (
-    <>
-      <Toaster />
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/" element={<Navigate to="/login" replace />} />
 
-          {/* <Route path="/home" element={<Home />} /> */}
-        </Routes>
-      </Router>
-    </>
-  );
+const App = () => {
+   return (
+      <>
+         <Toaster />
+         <Router>
+            <ScrollToTop />
+            <Routes>
+               <Route path="/login" element={<Login />} />
+               <Route path="/register" element={<Register />} />
+               <Route
+                 path="/home"
+                 element={
+                   <PrivateRoute>
+                     <Home />
+                   </PrivateRoute>
+                 }
+               />
+               <Route path="/" element={<Navigate to="/login" replace />} />
+               <Route path="*" element={<NotFound />} />
+            </Routes>
+         </Router>
+      </>
+   );
 };
 
 export default App;

@@ -1,25 +1,38 @@
-// Import React and necessary hooks
 import React, { useEffect, useState } from "react";
+import axios from "axios"; // Added axios import
 
-// Define the ProductList component
-const ProductList = ({ selectedCategory }) => {
-  // State to store the list of products
+// Map frontend category (used in buttons/nav) to backend format
+const mapCategory = {
+  men: "Male",
+  male: "Male",
+  women: "Female", 
+  female: "Female",
+  all: "all",
+};
+
+const ProductList = ({ selectedCategory = "all" }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Function to fetch products with optional category filter
-  const fetchProducts = async (category = null) => {
+  // Fetch products from backend with optional category filter
+  const fetchProducts = async (category = "all") => {
     setLoading(true);
+
     try {
+      const mapped = mapCategory[category.toLowerCase()] || "all"; // Fixed: was "a", now "all"
       let url = "http://localhost:5000/api/products";
 
-      // If category is specified, add it to the query
-      if (category && category !== "all") {
-        url += `?category=${category}`;
+      if (mapped !== "all") {
+        url += `?category=${mapped}`;
       }
 
-      const response = await fetch(url);
-      const data = await response.json();
+      console.log(`Fetching products for category: ${mapped} (${category})`);
+      console.log("Fetching products from:", url);
+
+      // Using axios as mentioned in your description
+      const response = await axios.get(url);
+      const data = response.data;
+
       setProducts(data);
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -29,61 +42,53 @@ const ProductList = ({ selectedCategory }) => {
     }
   };
 
-  // useEffect runs when component mounts or selectedCategory changes
   useEffect(() => {
     fetchProducts(selectedCategory);
   }, [selectedCategory]);
 
-  // Show loading state
   if (loading) {
     return (
       <div className="flex justify-center items-center p-8">
-        <div className="text-lg">Loading products...</div>
+        <p className="text-lg font-medium">Loading products...</p>
       </div>
     );
   }
 
-  // Show no products found message
   if (products.length === 0) {
+    let msg = "No products found.";
+    const cat = selectedCategory?.toLowerCase();
+
+    if (cat === "men") msg = "No men's products found.";
+    else if (cat === "women") msg = "No women's products found.";
+
     return (
       <div className="flex justify-center items-center p-8">
-        <div className="text-lg text-gray-500">
-          {selectedCategory === "male"
-            ? "No men's products found."
-            : selectedCategory === "female"
-            ? "No women's products found."
-            : "No products found."}
-        </div>
+        <p className="text-lg text-gray-500">{msg}</p>
       </div>
     );
   }
 
-  // Render the product grid
   return (
-    // Grid container: 2 columns on mobile, more on larger screens
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
-      {/* Map through the products array and render each product card */}
       {products.map((product) => (
-        // Each product card
         <div
-          key={product._id} // Unique key for React
+          key={product._id}
           className="bg-white shadow-md rounded overflow-hidden flex flex-col justify-between hover:shadow-lg transition-shadow duration-300"
         >
-          {/* Product image at the top, with fixed height and rounded top corners */}
           <img
-            src={product.imageUrl} // Image URL from product data
-            alt={product.name} // Alt text for accessibility
-            className="w-full h-64 md:h-120 object-cover" // Responsive height: smaller on mobile, taller on desktop
+            src={product.imageUrl}
+            alt={product.name}
+            className="w-full h-64 object-cover"
           />
-          {/* Product details section */}
-          <div className="px-4 py-3 flex flex-col items-start">
-            {/* Product name, styled and spaced */}
+          <div className="px-4 py-3">
             <h2 className="text-base font-medium text-black mb-1">
               {product.name}
             </h2>
-            {/* Product price, bold and colored, formatted with $ and thousands separator */}
             <p className="text-lg font-bold text-orange-900">
               ${product.price.toLocaleString()}
+            </p>
+            <p className="text-sm text-gray-600">
+              {product.category}
             </p>
           </div>
         </div>
@@ -92,5 +97,4 @@ const ProductList = ({ selectedCategory }) => {
   );
 };
 
-// Export the component so it can be used elsewhere
 export default ProductList;

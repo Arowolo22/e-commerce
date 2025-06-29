@@ -4,6 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Navbar = ({ onCategorySelect, selectedCategory }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -26,6 +27,7 @@ const Navbar = ({ onCategorySelect, selectedCategory }) => {
   const handleLogout = async () => {
     await signOut(auth);
     setDropdownOpen(false);
+    toast.success("User Logged out Successfully");
     navigate("/login");
   };
 
