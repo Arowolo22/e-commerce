@@ -1,24 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import Products from "../components/products";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import Hero from "../components/hero";
+import { useParams } from "react-router-dom";
 
 const Home = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-  };
+  const { category } = useParams();
 
   return (
     <>
-      <Navbar
-        onCategorySelect={handleCategorySelect}
-        selectedCategory={selectedCategory}
-      />
+      <Navbar selectedCategory={category || "all"} />
       <Hero />
-      <Products selectedCategory={selectedCategory} />
+      <Products selectedCategory={category || "all"} />
       <Footer />
     </>
   );

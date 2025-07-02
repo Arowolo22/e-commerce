@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios"; // Added axios import
+import { useNavigate } from "react-router-dom";
+
 
 // Map frontend category (used in buttons/nav) to backend format
 const mapCategory = {
   men: "Male",
   male: "Male",
-  women: "Female", 
+  women: "Female",
   female: "Female",
   all: "all",
 };
@@ -13,6 +15,7 @@ const mapCategory = {
 const ProductList = ({ selectedCategory = "all" }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Fetch products from backend with optional category filter
   const fetchProducts = async (category = "all") => {
@@ -69,16 +72,18 @@ const ProductList = ({ selectedCategory = "all" }) => {
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+    
+    <div className="grid grid-cols-2 sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
       {products.map((product) => (
         <div
           key={product._id}
-          className="bg-white shadow-md rounded overflow-hidden flex flex-col justify-between hover:shadow-lg transition-shadow duration-300"
+          className="bg-white shadow-md rounded overflow-hidden flex flex-col justify-between hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+          onClick={() => navigate(`/product/${product._id}`)}
         >
           <img
             src={product.imageUrl}
             alt={product.name}
-            className="w-full h-64 object-cover"
+            className="w-full h-120 object-cover"
           />
           <div className="px-4 py-3">
             <h2 className="text-base font-medium text-black mb-1">
@@ -87,13 +92,11 @@ const ProductList = ({ selectedCategory = "all" }) => {
             <p className="text-lg font-bold text-orange-900">
               ${product.price.toLocaleString()}
             </p>
-            <p className="text-sm text-gray-600">
-              {product.category}
-            </p>
           </div>
         </div>
       ))}
     </div>
+  
   );
 };
 

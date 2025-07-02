@@ -6,7 +6,7 @@ import { signOut } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const Navbar = ({ onCategorySelect, selectedCategory }) => {
+const Navbar = ({ selectedCategory }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [user] = useAuthState(auth);
@@ -31,22 +31,12 @@ const Navbar = ({ onCategorySelect, selectedCategory }) => {
     navigate("/login");
   };
 
-  // Handle category selection
-  const handleCategoryClick = (category) => {
-    if (onCategorySelect) {
-      onCategorySelect(category);
-    }
-    setMenuOpen(false); // Close mobile menu
-  };
-
   // Helper function to get button styles based on selection
   const getButtonStyle = (category) => {
     const baseStyle = "font-medium transition-colors";
     const isSelected = selectedCategory === category;
     return `${baseStyle} ${
-      isSelected
-        ? "text-black font-semibold"
-        : "text-black hover:text-gray-600"
+      isSelected ? "text-black font-semibold" : "text-black hover:text-gray-600"
     }`;
   };
 
@@ -73,24 +63,27 @@ const Navbar = ({ onCategorySelect, selectedCategory }) => {
               </Link>
               {/* Desktop links */}
               <div className="hidden md:flex space-x-8 ml-6">
-                <button
-                  onClick={() => handleCategoryClick("male")}
-                  className={getButtonStyle("male")}
+                <Link
+                  to="/home/men"
+                  className={getButtonStyle("men")}
+                  onClick={() => setMenuOpen(false)}
                 >
                   Men
-                </button>
-                <button
-                  onClick={() => handleCategoryClick("female")}
-                  className={getButtonStyle("female")}
+                </Link>
+                <Link
+                  to="/home/women"
+                  className={getButtonStyle("women")}
+                  onClick={() => setMenuOpen(false)}
                 >
                   Women
-                </button>
-                <button
-                  onClick={() => handleCategoryClick("all")}
+                </Link>
+                <Link
+                  to="/home/all"
                   className={getButtonStyle("all")}
+                  onClick={() => setMenuOpen(false)}
                 >
                   Products
-                </button>
+                </Link>
               </div>
             </div>
             {/* Right section */}
@@ -138,9 +131,6 @@ const Navbar = ({ onCategorySelect, selectedCategory }) => {
               <div className="h-6 border-l border-gray-300 mx-2" />
               {/* Icons */}
               <div className="flex items-center space-x-4">
-                {/* <button>
-                           <Heart size={22} />
-                        </button> */}
                 <button>
                   <Search size={22} />
                 </button>
@@ -154,9 +144,6 @@ const Navbar = ({ onCategorySelect, selectedCategory }) => {
             </div>
             {/* Mobile right-side icons */}
             <div className="flex md:hidden items-center space-x-4">
-              {/* <button>
-                        <Heart size={22} />
-                     </button> */}
               <button>
                 <Search size={22} />
               </button>
@@ -179,24 +166,27 @@ const Navbar = ({ onCategorySelect, selectedCategory }) => {
           `}
         >
           <div className="flex flex-col space-y-4 mt-4">
-            <button
-              onClick={() => handleCategoryClick("male")}
-              className={`${getButtonStyle("male")} text-left`}
+            <Link
+              to="/home/men"
+              className={`${getButtonStyle("men")} text-left`}
+              onClick={() => setMenuOpen(false)}
             >
               Men
-            </button>
-            <button
-              onClick={() => handleCategoryClick("female")}
-              className={`${getButtonStyle("female")} text-left`}
+            </Link>
+            <Link
+              to="/home/women"
+              className={`${getButtonStyle("women")} text-left`}
+              onClick={() => setMenuOpen(false)}
             >
               Women
-            </button>
-            <button
-              onClick={() => handleCategoryClick("all")}
+            </Link>
+            <Link
+              to="/home/all"
               className={`${getButtonStyle("all")} text-left`}
+              onClick={() => setMenuOpen(false)}
             >
               Products
-            </button>
+            </Link>
 
             {/* Auth Greeting or Sign in */}
             {user ? (

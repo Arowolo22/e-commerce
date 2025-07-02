@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
@@ -7,41 +12,49 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
+import ProductDetail from "./pages/ProductDetail";
 
 const ScrollToTop = () => {
-   const { pathname } = useLocation();
+  const { pathname } = useLocation();
 
-   useEffect(() => {
-      window.scrollTo(0, 0);
-   }, [pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
-   return null;
+  return null;
 };
 
-
 const App = () => {
-   return (
-      <>
-         <Toaster />
-         <Router>
-            <ScrollToTop />
-            <Routes>
-               <Route path="/login" element={<Login />} />
-               <Route path="/register" element={<Register />} />
-               <Route
-                 path="/home"
-                 element={
-                   <PrivateRoute>
-                     <Home />
-                   </PrivateRoute>
-                 }
-               />
-               <Route path="/" element={<Navigate to="/login" replace />} />
-               <Route path="*" element={<NotFound />} />
-            </Routes>
-         </Router>
-      </>
-   );
+  return (
+    <>
+      <Toaster />
+      <Router>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/home/:category?"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/product/:id"
+            element={
+              <PrivateRoute>
+                <ProductDetail />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </>
+  );
 };
 
 export default App;
