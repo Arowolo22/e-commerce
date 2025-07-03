@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import productRoutes from "./routes/productRoute.js";
-// import cartRoutes from "./routes/cartRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
 // import orderRoutes from "./routes/orderRoutes.js";
 
 dotenv.config();
@@ -15,7 +15,7 @@ app.use(express.json());
 connectDB();
 
 app.use("/api/products", productRoutes);
-// app.use("/api/cart", cartRoutes);
+app.use("/api/cart", cartRoutes);
 // app.use("/api/orders", orderRoutes);
 
 app.get("/", (req, res) => {
