@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // to get the product ID from the URL
+import { useParams, useNavigate } from "react-router-dom"; // to get the product ID from the URL and for navigation
 import axios from "axios"; // for API requests
-import Navbar from "../components/navbar";
-import Footer from "../components/footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { useCart } from "../CartContext";
 
 const ProductDetails = () => {
   const { id } = useParams(); // extract product ID from URL
+  const navigate = useNavigate(); // for redirecting after add to cart
   const [product, setProduct] = useState(null); // state to hold fetched product
   const [loading, setLoading] = useState(true); // loading state
   const [selectedSize, setSelectedSize] = useState(""); // selected size from dropdown
   const [quantity, setQuantity] = useState(1); // selected quantity
+  const { fetchCartCount } = useCart();
 
   useEffect(() => {
     // function to fetch product data from API
@@ -29,23 +32,29 @@ const ProductDetails = () => {
   }, [id]); // run again if id changes
 
   // function to add product to cart
-  const handleAddToCart = () => {
-    const cartItem = {
-      ...product,
-      selectedSize,
-      quantity,
-    };
-
-    // get existing cart from localStorage
-    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // add the new item to the cart
-    existingCart.push(cartItem);
-
-    // save updated cart to localStorage
-    localStorage.setItem("cart", JSON.stringify(existingCart));
-
-    alert("Product added to cart!"); // show confirmation
+  const handleAddToCart = async () => {
+    if (!selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
+    try {
+      const cartItem = {
+        product: product._id,
+        name: product.name,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        selectedSize,
+        quantity,
+      };
+      await axios.post("http://localhost:5000/api/cart/add", cartItem);
+      await fetchCartCount();
+      // Optionally show a confirmation message
+      alert("Product added to cart!");
+      // Do NOT navigate to cart page
+    } catch (error) {
+      alert("Failed to add to cart");
+      console.error(error);
+    }
   };
 
   // show loading or error messages
@@ -54,78 +63,78 @@ const ProductDetails = () => {
 
   return (
     <>
-    <Navbar/>
-    <div className="max-w-6xl  mx-auto p-6">
-      {/* flex container: image on left, details on right */}
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* left column: product image */}
-        <div className="md:w-1/2  w-full">
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            className="w-full h-[720px] object-cover rounded-xl"
-          />
-        </div>
-
-        {/* right column: product details */}
-        <div className="md:w-1/2 w-full">
-          {/* product name */}
-          <h2 className="text-3xl font-bold mb-4">{product.name}</h2>
-
-          {/* product description */}
-          <p className="text-gray-700 mb-4">{product.description}</p>
-
-          {/* product price */}
-          <p className="text-2xl font-semibold text-black mb-4">
-            ${product.price.toLocaleString()}
-          </p>
-
-          {/* size selection dropdown */}
-          {product.size && (
-            <div className="mb-4">
-              <label className="block font-medium mb-1">Size</label>
-              <select
-                value={selectedSize}
-                onChange={(e) => setSelectedSize(e.target.value)}
-                className="w-full p-2 border rounded"
-              >
-                <option value="">Select Size</option>
-                {/* handles both array or string size format */}
-                {(Array.isArray(product.size)
-                  ? product.size
-                  : product.size.split(",")
-                ).map((size) => (
-                  <option key={size.trim()} value={size.trim()}>
-                    {size.trim()}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {/* quantity input field */}
-          <div className="mb-6">
-            <label className="block font-medium mb-1">Quantity</label>
-            <input
-              type="number"
-              min="1"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-24 p-2 border rounded"
+      <Navbar />
+      <div className="max-w-6xl  mx-auto p-6">
+        {/* flex container: image on left, details on right */}
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* left column: product image */}
+          <div className="md:w-1/2  w-full">
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              className="w-full h-[720px] object-cover rounded-xl"
             />
           </div>
 
-          {/* add to cart button */}
-          <button
-            onClick={handleAddToCart}
-            className="bg-black text-white px-6 w-full  py-3 rounded-lg hover:bg-gray-800 transition duration-300"
-          >
-            Add to Cart
-          </button>
+          {/* right column: product details */}
+          <div className="md:w-1/2 w-full">
+            {/* product name */}
+            <h2 className="text-3xl font-bold mb-4">{product.name}</h2>
+
+            {/* product description */}
+            <p className="text-gray-700 mb-4">{product.description}</p>
+
+            {/* product price */}
+            <p className="text-2xl font-semibold text-black mb-4">
+              ${product.price.toLocaleString()}
+            </p>
+
+            {/* size selection dropdown */}
+            {product.size && (
+              <div className="mb-4">
+                <label className="block font-medium mb-1">Size</label>
+                <select
+                  value={selectedSize}
+                  onChange={(e) => setSelectedSize(e.target.value)}
+                  className="w-full p-2 border rounded"
+                >
+                  <option value="">Select Size</option>
+                  {/* handles both array or string size format */}
+                  {(Array.isArray(product.size)
+                    ? product.size
+                    : product.size.split(",")
+                  ).map((size) => (
+                    <option key={size.trim()} value={size.trim()}>
+                      {size.trim()}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* quantity input field */}
+            <div className="mb-6">
+              <label className="block font-medium mb-1">Quantity</label>
+              <input
+                type="number"
+                min="1"
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                className="w-24 p-2 border rounded"
+              />
+            </div>
+
+            {/* add to cart button */}
+            <button
+              onClick={handleAddToCart}
+              className="bg-black text-white px-6 w-full  py-3 rounded-lg hover:bg-gray-800 transition duration-300"
+            >
+              Add to Cart
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <Footer />
+      <Footer />
     </>
   );
 };

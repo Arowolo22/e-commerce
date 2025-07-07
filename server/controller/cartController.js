@@ -41,7 +41,12 @@ export const addToCart = async (req, res) => {
 export const getCart = async (req, res) => {
   try {
     const cartItems = await Cart.find();
-    res.status(200).json(cartItems);
+    // Calculate total price
+    const total = cartItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+    res.status(200).json({ cartItems, total });
   } catch (error) {
     console.error("Fetch cart error:", error);
     res.status(500).json({ error: "Server error" });

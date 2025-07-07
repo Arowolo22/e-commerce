@@ -13,6 +13,7 @@ import { useLocation } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
 import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/cart"
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -33,6 +34,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/cart" element={<Cart />} />
           <Route
             path="/home/:category?"
             element={

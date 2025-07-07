@@ -5,17 +5,23 @@ import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useCart } from "../CartContext";
 
 const Navbar = ({ selectedCategory }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const { cartCount, fetchCartCount } = useCart();
 
   // Close dropdown when user logs out
   useEffect(() => {
     if (!user) setDropdownOpen(false);
   }, [user]);
+
+  useEffect(() => {
+    fetchCartCount();
+  }, []);
 
   // Get first name from displayName or email
   const getFirstName = () => {
@@ -131,11 +137,16 @@ const Navbar = ({ selectedCategory }) => {
               <div className="h-6 border-l border-gray-300 mx-2" />
               {/* Icons */}
               <div className="flex items-center space-x-4">
-                <button>
-                  <Search size={22} />
+                <button onClick={() => navigate("/cart")} className="relative">
+                  <ShoppingBag size={22} />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                      {cartCount}
+                    </span>
+                  )}
                 </button>
                 <button>
-                  <ShoppingBag size={22} />
+                  <Search size={22} />
                 </button>
                 <button className="bg-black rounded text-white p-1 pl-3 pr-3 ml-4">
                   AI Picks
