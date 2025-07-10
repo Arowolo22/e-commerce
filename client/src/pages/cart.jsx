@@ -109,7 +109,7 @@ const Cart = () => {
                         )
                       }
                     >
-                      -
+                      
                     </button>
                     <span className="px-2">{item.quantity}</span>
                     <button
@@ -124,6 +124,7 @@ const Cart = () => {
                     >
                       +
                     </button>
+                
                     <button
                       className="ml-4 text-red-500 hover:text-red-700"
                       onClick={() => deleteItem(item._id)}

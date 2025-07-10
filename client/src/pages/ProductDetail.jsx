@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // to get the product ID from the URL and for navigation
+import { useParams, } from "react-router-dom"; // to get the product ID from the URL
 import axios from "axios"; // for API requests
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useCart } from "../CartContext";
+import toast from "react-hot-toast"
 
 const ProductDetails = () => {
   const { id } = useParams(); // extract product ID from URL
-  const navigate = useNavigate(); // for redirecting after add to cart
+ 
   const [product, setProduct] = useState(null); // state to hold fetched product
   const [loading, setLoading] = useState(true); // loading state
   const [selectedSize, setSelectedSize] = useState(""); // selected size from dropdown
@@ -34,7 +35,7 @@ const ProductDetails = () => {
   // function to add product to cart
   const handleAddToCart = async () => {
     if (!selectedSize) {
-      alert("Please select a size.");
+      toast.error("Please select a size.");
       return;
     }
     try {
@@ -49,10 +50,11 @@ const ProductDetails = () => {
       await axios.post("http://localhost:5000/api/cart/add", cartItem);
       await fetchCartCount();
       // Optionally show a confirmation message
-      alert("Product added to cart!");
+      
+      toast.success("Product added to cart")
       // Do NOT navigate to cart page
     } catch (error) {
-      alert("Failed to add to cart");
+      toast.error("Failed to add to cart");
       console.error(error);
     }
   };
@@ -130,6 +132,7 @@ const ProductDetails = () => {
               className="bg-black text-white px-6 w-full  py-3 rounded-lg hover:bg-gray-800 transition duration-300"
             >
               Add to Cart
+              
             </button>
           </div>
         </div>

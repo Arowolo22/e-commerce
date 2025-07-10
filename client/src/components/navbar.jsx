@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Heart, Search, ShoppingBag, Menu } from "lucide-react";
+import {  Search, ShoppingBag, Menu } from "lucide-react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
@@ -140,12 +140,12 @@ const Navbar = ({ selectedCategory }) => {
                 <button onClick={() => navigate("/cart")} className="relative">
                   <ShoppingBag size={22} />
                   {cartCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                    <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full px-1.5 py-0.5">
                       {cartCount}
                     </span>
                   )}
                 </button>
-                <button>
+                <button onClick={() => navigate("/search")}>
                   <Search size={22} />
                 </button>
                 <button className="bg-black rounded text-white p-1 pl-3 pr-3 ml-4">
