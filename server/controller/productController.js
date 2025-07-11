@@ -151,21 +151,15 @@ export const deleteProduct = async (req, res) => {
 // Search products by name or description
 export const searchProducts = async (req, res) => {
   try {
-    const { q } = req.query;
-
-    // Build search query - only search if query is provided
-    let query = {};
-    if (q && q.trim()) {
-      query.$or = [
-        { name: { $regex: q.trim(), $options: "i" } },
-        { description: { $regex: q.trim(), $options: "i" } },
-      ];
-    }
-
-    // Find products and sort by newest first
-    const products = await Product.find(query).sort({ createdAt: -1 });
-
-    res.json(products);
+    const q = req.query.q || "";
+    // Search by name or description, case-insensitive, partial match
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: q, $options: "i" } },
+        { description: { $regex: q, $options: "i" } }
+      ]
+    });
+    res.json(products); // Return array of matching products
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
