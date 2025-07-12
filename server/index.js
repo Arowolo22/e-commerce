@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import productRoutes from "./routes/productRoute.js";
 import cartRoutes from "./routes/cartRoutes.js";
-// import orderRoutes from "./routes/orderRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -16,6 +16,7 @@ connectDB();
 
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api", orderRoutes);
 
 // app.use("/api/orders", orderRoutes);
 
