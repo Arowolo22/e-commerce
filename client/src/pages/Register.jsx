@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserPlus } from "lucide-react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../config/firebase";
-import Navbar from "../components/navbar";
+import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const Register = () => {

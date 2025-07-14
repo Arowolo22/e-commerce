@@ -10,6 +10,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/cart";
 import Search from "./pages/search";
+import Checkout from "./pages/Checkout";
 
 const ScrollToTop = () => {
    const { pathname } = useLocation();
@@ -32,6 +33,14 @@ const App = () => {
                <Route path="/register" element={<Register />} />
                <Route path="/cart" element={<Cart />} />
                <Route path="/search" element={<Search />} />
+               <Route
+                  path="/checkout"
+                  element={
+                     <PrivateRoute>
+                        <Checkout />
+                     </PrivateRoute>
+                  }
+               />
                <Route
                   path="/home/:category?"
                   element={

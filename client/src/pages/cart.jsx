@@ -3,12 +3,14 @@ import axios from "axios";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useCart } from "../CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const { fetchCartCount } = useCart();
+  const navigate = useNavigate();
 
   // Fetch cart items
   const fetchCart = async () => {
@@ -108,9 +110,7 @@ const Cart = () => {
                           item.selectedSize
                         )
                       }
-                    >
-                      
-                    </button>
+                    ></button>
                     <span className="px-2">{item.quantity}</span>
                     <button
                       className="border px-2 py-1 rounded"
@@ -124,12 +124,12 @@ const Cart = () => {
                     >
                       +
                     </button>
-                
+
                     <button
                       className="ml-4 text-red-500 hover:text-red-700"
                       onClick={() => deleteItem(item._id)}
                     >
-                      <span role="img"  aria-label="delete">
+                      <span role="img" aria-label="delete">
                         🗑️
                       </span>
                     </button>
@@ -157,7 +157,10 @@ const Cart = () => {
           <div className="text-gray-500 text-sm mb-6">
             Shipping will be calculated at checkout
           </div>
-          <button className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold mb-4 hover:bg-gray-800 transition">
+          <button
+            className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold mb-4 hover:bg-gray-800 transition"
+            onClick={() => navigate("/checkout")}
+          >
             Check Out
           </button>
           <button
