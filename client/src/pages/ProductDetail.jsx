@@ -129,7 +129,7 @@ const ProductDetails = () => {
             {/* add to cart button */}
             <button
               onClick={handleAddToCart}
-              className="bg-black text-white px-6 w-full  py-3 rounded-lg hover:bg-gray-800 transition duration-300"
+              className="bg-black text-white px-6 w-full  py-3 rounded-lg  transition duration-300"
             >
               Add to Cart
               

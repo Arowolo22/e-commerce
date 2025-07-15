@@ -158,7 +158,7 @@ const Cart = () => {
             Shipping will be calculated at checkout
           </div>
           <button
-            className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold mb-4 hover:bg-gray-800 transition"
+            className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold mb-4  transition"
             onClick={() => navigate("/checkout")}
           >
             Check Out
