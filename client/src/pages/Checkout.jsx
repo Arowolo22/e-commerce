@@ -15,11 +15,12 @@ const Checkout = () => {
     city: "",
     state: "",
     zipCode: "",
-    country: "",
+    country: "Nigeria (NIG)",
     email: "",
     phone: "",
     address: "",
   });
+  const [shippingFee] = useState(1000); // Fixed shipping fee
 
   // Fetch cart items and total
   const fetchCart = async () => {
@@ -127,110 +128,179 @@ const Checkout = () => {
     <>
       <Navbar />
       <div className="max-w-7xl mx-auto p-6 flex flex-col md:flex-row gap-8 min-h-[70vh]">
-        {/* Billing Details */}
+        {/* Delivery details */}
         <div className="flex-1 bg-white rounded-lg p-8 shadow mb-8 md:mb-0">
-          <h2 className="text-2xl font-semibold mb-6">Billing Details</h2>
+          <h2 className="text-xl font-semibold mb-2">Delivery details</h2>
+          <p className="text-gray-500 mb-6 text-sm">
+            Expect delivery 2 - 3 days after you make your order.
+          </p>
           <form onSubmit={handlePayNow} className="space-y-4">
             <div>
-              <label className="block mb-1 font-medium">Full Name</label>
               <input
                 type="text"
-                name="name"
-                value={billing.name}
+                name="firstName"
+                value={billing.firstName}
                 onChange={handleChange}
-                className="w-full border rounded p-2"
+                className="w-full md:w-[49%] border rounded p-2 mb-2 md:mr-2"
+                placeholder="Enter firstname"
                 required
               />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">Email</label>
               <input
-                type="email"
-                name="email"
-                value={billing.email}
+                type="text"
+                name="lastName"
+                value={billing.lastName}
                 onChange={handleChange}
-                className="w-full border rounded p-2"
+                className="w-full md:w-[49%] border rounded p-2 mb-2 md:ml-2"
+                placeholder="Enter lastname"
                 required
               />
             </div>
-          
             <div>
-              <label className="block mb-1 font-medium">Phone</label>
+              <select
+                name="country"
+                value={billing.country}
+                onChange={handleChange}
+                className="w-full border rounded p-2 mb-2"
+                required
+              >
+                <option value="Nigeria (NIG)">NG Nigeria (NIG)</option>
+                {/* Add more countries if needed */}
+              </select>
+            </div>
+            <div>
+              <input
+                type="text"
+                name="address"
+                value={billing.address}
+                onChange={handleChange}
+                className="w-full border rounded p-2 mb-2"
+                placeholder="Enter address"
+                required
+              />
+            </div>
+            <div className="flex flex-col md:flex-row gap-2">
+              <input
+                type="text"
+                name="city"
+                value={billing.city}
+                onChange={handleChange}
+                className="w-full md:w-1/3 border rounded p-2"
+                placeholder="Enter city"
+                required
+              />
+              <input
+                type="text"
+                name="zipCode"
+                value={billing.zipCode}
+                onChange={handleChange}
+                className="w-full md:w-1/3 border rounded p-2"
+                placeholder="Enter postalCode"
+                required
+              />
+              <select
+                name="state"
+                value={billing.state}
+                onChange={handleChange}
+                className="w-full md:w-1/3 border rounded p-2"
+                required
+              >
+                <option value="">Select a state</option>
+                <option value="Lagos">Lagos</option>
+                <option value="Abuja">Abuja</option>
+                <option value="Kano">Kano</option>
+                {/* Add more states as needed */}
+              </select>
+            </div>
+            <div>
               <input
                 type="tel"
                 name="phone"
                 value={billing.phone}
                 onChange={handleChange}
-                className="w-full border rounded p-2"
+                className="w-full border rounded p-2 mb-2"
+                placeholder="Enter phone number"
                 required
               />
             </div>
-            <div>
-              <label className="block mb-1 font-medium">Address</label>
-              <textarea
-                name="address"
-                value={billing.address}
-                onChange={handleChange}
-                className="w-full border rounded p-2"
-                required
-              />
+            {/* Shipping method */}
+            <div className="mt-6">
+              <h3 className="font-semibold mb-2">Shipping method</h3>
+              <div className="flex items-center border rounded p-2 justify-between">
+                <span>Standard Shipping</span>
+                <span className="font-semibold">
+                  ₦{shippingFee.toLocaleString()}
+                </span>
+              </div>
+            </div>
+            {/* Payment method */}
+            <div className="mt-6">
+              <h3 className="font-semibold mb-2">Payment method</h3>
+              <div className="flex items-center border rounded p-2">
+                <span>Paystack</span>
+                <img
+                  src="https://seeklogo.com/images/P/paystack-logo-0B2A0B5E9C-seeklogo.com.png"
+                  alt="Paystack"
+                  className="w-6 h-6 ml-2"
+                />
+              </div>
             </div>
             <button
               type="submit"
               className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold mt-4 hover:bg-gray-800 transition"
               disabled={loading}
             >
-              {loading ? "Processing..." : "Pay Now"}
+              {loading ? "Processing..." : "Pay now"}
             </button>
+            <p className="text-xs text-center text-gray-500 mt-2">
+              After clicking "Pay now", you will be redirected to Paystack to
+              complete your purchase securely.
+            </p>
           </form>
         </div>
         {/* Order Summary */}
         <div className="w-full md:w-1/2 bg-white rounded-lg p-8 shadow h-fit">
-          <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
-          {loading ? (
-            <div>Loading...</div>
-          ) : cartItems.length === 0 ? (
-            <div className="text-gray-500">No items in cart.</div>
-          ) : (
-            <div className="space-y-4">
-              {cartItems.map((item) => (
-                <div
-                  key={item._id}
-                  className="flex items-center gap-4 border-b pb-4"
-                >
-                  <img
-                    src={item.imageUrl}
-                    alt={item.name}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                  <div className="flex-1">
-                    <div className="font-bold">{item.name}</div>
-                    {item.selectedSize && (
-                      <div className="text-gray-500 text-sm">
-                        Size: {item.selectedSize}
-                      </div>
-                    )}
-                    <div className="text-gray-500 text-sm">
-                      Qty: {item.quantity}
-                    </div>
+          {cartItems.length > 0 && (
+            <>
+              <div className="flex items-center gap-4 mb-4">
+                <img
+                  src={cartItems[0].imageUrl}
+                  alt={cartItems[0].name}
+                  className="w-16 h-16 object-cover rounded"
+                />
+                <div>
+                  <div className="font-bold">{cartItems[0].name}</div>
+                  <div className="text-gray-500 text-sm">
+                    Men /{" "}
+                    {cartItems[0].selectedSize
+                      ? ` ${cartItems[0].selectedSize}`
+                      : "-"}{" "}
+                    / grey
                   </div>
-                  <div className="text-right min-w-[80px]">
-                    <div className="font-semibold">
-                      ₦{item.price.toLocaleString()}
-                    </div>
-                    <div className="text-gray-500 text-xs">
-                      Total: ₦{(item.price * item.quantity).toLocaleString()}
-                    </div>
+                  <div className="text-gray-500 text-sm">
+                    QTY - {cartItems[0].quantity}
                   </div>
                 </div>
-              ))}
-              <div className="flex justify-between items-center mt-6 pt-4 border-t">
-                <span className="text-lg font-semibold">Total</span>
-                <span className="text-xl font-bold">
-                  ₦{total.toLocaleString()}
-                </span>
+                <div className="ml-auto font-semibold text-lg">
+                  ₦{cartItems[0].price.toLocaleString()}
+                </div>
               </div>
-            </div>
+              <div className="border-t pt-4">
+                <div className="flex justify-between mb-2">
+                  <span>Subtotal ({cartItems.length} items)</span>
+                  <span>₦{total.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <span>Shipping fee</span>
+                  <span>₦{shippingFee.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center mt-4">
+                  <span className="font-bold text-lg">Total</span>
+                  <span className="font-bold text-2xl">
+                    ₦{(total + shippingFee).toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>
