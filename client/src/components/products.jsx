@@ -72,7 +72,6 @@ const ProductList = ({ selectedCategory = "all" }) => {
   }
 
   return (
-    
     <div className="grid grid-cols-2 sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
       {products.map((product) => (
         <div
@@ -90,13 +89,12 @@ const ProductList = ({ selectedCategory = "all" }) => {
               {product.name}
             </h2>
             <p className="text-lg font-bold text-orange-900">
-              ${product.price.toLocaleString()}
+              ₦{product.price.toLocaleString()}
             </p>
           </div>
         </div>
       ))}
     </div>
-  
   );
 };
 

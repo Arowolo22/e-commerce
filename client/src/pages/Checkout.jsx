@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 
-const PAYSTACK_PUBLIC_KEY = "sk_test_30b893efe7b678d45b43df1752eb20b66f0a8e22"; 
+const PAYSTACK_PUBLIC_KEY = "sk_test_30b893efe7b678d45b43df1752eb20b66f0a8e22";
 
 const Checkout = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -12,9 +12,9 @@ const Checkout = () => {
   const [billing, setBilling] = useState({
     firstName: "",
     lastName: "",
-    city:"",
+    city: "",
     state: "",
-    zipCode:"",
+    zipCode: "",
     country: "",
     email: "",
     phone: "",
@@ -57,8 +57,8 @@ const Checkout = () => {
       !billing.city ||
       !billing.state ||
       !billing.zipCode ||
-      !billing.country||
-     ) {
+      !billing.country
+    ) {
       alert("Please fill in all billing details.");
       return;
     }
@@ -80,7 +80,7 @@ const Checkout = () => {
               {
                 display_name: "Name",
                 variable_name: "name",
-                value: billing.firstName + " " + billing.lastName,
+                value: billing.name,
               },
               {
                 display_name: "Phone",
@@ -153,6 +153,7 @@ const Checkout = () => {
                 required
               />
             </div>
+          
             <div>
               <label className="block mb-1 font-medium">Phone</label>
               <input
