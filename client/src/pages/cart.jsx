@@ -152,7 +152,7 @@ const Cart = () => {
           <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
           <div className="flex justify-between items-center mb-4">
             <span className="text-lg">Subtotal →</span>
-            <span className="text-xl font-bold">${total.toLocaleString()}</span>
+            <span className="text-xl font-bold">₦{total.toLocaleString()}</span>
           </div>
           <div className="text-gray-500 text-sm mb-6">
             Shipping will be calculated at checkout

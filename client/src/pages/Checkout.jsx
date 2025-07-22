@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import axios from "axios";
+import toast from "react-hot-toast"
 
-const PAYSTACK_PUBLIC_KEY = "sk_test_30b893efe7b678d45b43df1752eb20b66f0a8e22";
+const PAYSTACK_PUBLIC_KEY = "sk_test_c7f1ab60771f37a2882b9398b75ff81234397a18";
 
 const Checkout = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -52,15 +53,14 @@ const Checkout = () => {
     if (
       !billing.firstName ||
       !billing.lastName ||
-      !billing.email ||
       !billing.phone ||
       !billing.address ||
       !billing.city ||
       !billing.state ||
-      !billing.zipCode ||
+       !billing.zipCode ||
       !billing.country
     ) {
-      alert("Please fill in all billing details.");
+      toast.error("Please fill in all details.");
       return;
     }
     // Paystack inline payment
@@ -96,11 +96,11 @@ const Checkout = () => {
             ],
           },
           callback: function (response) {
-            alert("Payment complete! Reference: " + response.reference);
+            toast.success("Payment complete! Reference: " + response.reference);
             // Optionally, redirect or clear cart here
           },
           onClose: function () {
-            alert("Payment window closed");
+            toast.error("Payment window closed");
           },
         })
         .openIframe();
@@ -135,7 +135,7 @@ const Checkout = () => {
             Expect delivery 2 - 3 days after you make your order.
           </p>
           <form onSubmit={handlePayNow} className="space-y-4">
-            <div>
+            <div className="flex flex-col md:flex-row gap-2">
               <input
                 type="text"
                 name="firstName"
@@ -155,18 +155,14 @@ const Checkout = () => {
                 required
               />
             </div>
-            <div>
-              <select
-                name="country"
-                value={billing.country}
-                onChange={handleChange}
-                className="w-full border rounded p-2 mb-2"
-                required
-              >
-                <option value="Nigeria (NIG)">NG Nigeria (NIG)</option>
-                {/* Add more countries if needed */}
-              </select>
+
+            <div className="mt-6">
+              <div className="flex items-center border rounded p-2 justify-between">
+                <span>🇳🇬 Nigeria (NIG)</span>
+                
+              </div>
             </div>
+
             <div>
               <input
                 type="text"
@@ -232,18 +228,7 @@ const Checkout = () => {
                 </span>
               </div>
             </div>
-            {/* Payment method */}
-            <div className="mt-6">
-              <h3 className="font-semibold mb-2">Payment method</h3>
-              <div className="flex items-center border rounded p-2">
-                <span>Paystack</span>
-                <img
-                  src="https://seeklogo.com/images/P/paystack-logo-0B2A0B5E9C-seeklogo.com.png"
-                  alt="Paystack"
-                  className="w-6 h-6 ml-2"
-                />
-              </div>
-            </div>
+
             <button
               type="submit"
               className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold mt-4 hover:bg-gray-800 transition"
