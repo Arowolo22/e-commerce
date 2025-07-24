@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import axios from "axios";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 
-const PAYSTACK_PUBLIC_KEY = "sk_test_c7f1ab60771f37a2882b9398b75ff81234397a18";
+const VITE_PAYSTACK_PUBLIC_KEY = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY;
+
 
 const Checkout = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -57,7 +58,7 @@ const Checkout = () => {
       !billing.address ||
       !billing.city ||
       !billing.state ||
-       !billing.zipCode ||
+      !billing.zipCode ||
       !billing.country
     ) {
       toast.error("Please fill in all details.");
@@ -71,7 +72,7 @@ const Checkout = () => {
     if (handler && handler.setup) {
       handler
         .setup({
-          key: PAYSTACK_PUBLIC_KEY,
+          key: VITE_PAYSTACK_PUBLIC_KEY,
           email: billing.email,
           amount: total * 100, // kobo
           currency: "NGN",
@@ -79,9 +80,9 @@ const Checkout = () => {
           metadata: {
             custom_fields: [
               {
-                display_name: "Name",
-                variable_name: "name",
-                value: billing.name,
+                display_name: "Full Name",
+                variable_name: "full_name",
+                value: billing.firstName + " " + billing.lastName,
               },
               {
                 display_name: "Phone",
@@ -141,7 +142,7 @@ const Checkout = () => {
                 name="firstName"
                 value={billing.firstName}
                 onChange={handleChange}
-                className="w-full md:w-[49%] border rounded p-2 mb-2 md:mr-2"
+                className="w-full md:w-[49%] border rounded p-2 mb-2 md:mr-2  border-gray-300 placeholder-gray-500"
                 placeholder="Enter firstname"
                 required
               />
@@ -150,16 +151,15 @@ const Checkout = () => {
                 name="lastName"
                 value={billing.lastName}
                 onChange={handleChange}
-                className="w-full md:w-[49%] border rounded p-2 mb-2 md:ml-2"
+                className="w-full md:w-[49%] border rounded p-2 mb-2 md:ml-2  border-gray-300 placeholder-gray-500"
                 placeholder="Enter lastname"
                 required
               />
             </div>
 
             <div className="mt-6">
-              <div className="flex items-center border rounded p-2 justify-between">
+              <div className="flex items-center border rounded p-2 justify-between  border-gray-300 placeholder-gray-500">
                 <span>🇳🇬 Nigeria (NIG)</span>
-                
               </div>
             </div>
 
@@ -169,7 +169,7 @@ const Checkout = () => {
                 name="address"
                 value={billing.address}
                 onChange={handleChange}
-                className="w-full border rounded p-2 mb-2"
+                className="w-full border rounded p-2 mb-2  border-gray-300 placeholder-gray-500"
                 placeholder="Enter address"
                 required
               />
@@ -180,7 +180,7 @@ const Checkout = () => {
                 name="city"
                 value={billing.city}
                 onChange={handleChange}
-                className="w-full md:w-1/3 border rounded p-2"
+                className="w-full md:w-1/3 border rounded p-2  border-gray-300 placeholder-gray-500"
                 placeholder="Enter city"
                 required
               />
@@ -189,7 +189,7 @@ const Checkout = () => {
                 name="zipCode"
                 value={billing.zipCode}
                 onChange={handleChange}
-                className="w-full md:w-1/3 border rounded p-2"
+                className="w-full md:w-1/3 border rounded p-2  border-gray-300 placeholder-gray-500"
                 placeholder="Enter postalCode"
                 required
               />
@@ -197,7 +197,7 @@ const Checkout = () => {
                 name="state"
                 value={billing.state}
                 onChange={handleChange}
-                className="w-full md:w-1/3 border rounded p-2"
+                className="w-full md:w-1/3 border rounded p-2  border-gray-300 placeholder-gray-500"
                 required
               >
                 <option value="">Select a state</option>
@@ -213,7 +213,7 @@ const Checkout = () => {
                 name="phone"
                 value={billing.phone}
                 onChange={handleChange}
-                className="w-full border rounded p-2 mb-2"
+                className="w-full border rounded p-2 mb-2  border-gray-300 placeholder-gray-500"
                 placeholder="Enter phone number"
                 required
               />
@@ -221,7 +221,7 @@ const Checkout = () => {
             {/* Shipping method */}
             <div className="mt-6">
               <h3 className="font-semibold mb-2">Shipping method</h3>
-              <div className="flex items-center border rounded p-2 justify-between">
+              <div className="flex items-center border rounded p-2 justify-between  border-gray-300 placeholder-gray-500">
                 <span>Standard Shipping</span>
                 <span className="font-semibold">
                   ₦{shippingFee.toLocaleString()}
