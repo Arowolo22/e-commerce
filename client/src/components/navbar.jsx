@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {  Search, ShoppingBag, Menu } from "lucide-react";
+import { Search, ShoppingBag, Menu } from "lucide-react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
@@ -155,11 +155,16 @@ const Navbar = ({ selectedCategory }) => {
             </div>
             {/* Mobile right-side icons */}
             <div className="flex md:hidden items-center space-x-4">
-              <button>
+              <button onClick={() => navigate("/search")}>
                 <Search size={22} />
               </button>
-              <button>
+              <button onClick={() => navigate("/cart")} className="relative">
                 <ShoppingBag size={22} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full px-1.5 py-0.5">
+                    {cartCount}
+                  </span>
+                )}
               </button>
             </div>
           </div>

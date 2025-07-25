@@ -4,8 +4,7 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const VITE_PAYSTACK_PUBLIC_KEY = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY;
-
+const PAYSTACK_PUBLIC_KEY = "pk_test_a99ba50a93a9e9bcc97324eeb9baaf060ef107ab";
 
 const Checkout = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -54,6 +53,7 @@ const Checkout = () => {
     if (
       !billing.firstName ||
       !billing.lastName ||
+      !billing.email ||
       !billing.phone ||
       !billing.address ||
       !billing.city ||
@@ -72,7 +72,7 @@ const Checkout = () => {
     if (handler && handler.setup) {
       handler
         .setup({
-          key: VITE_PAYSTACK_PUBLIC_KEY,
+          key: PAYSTACK_PUBLIC_KEY,
           email: billing.email,
           amount: total * 100, // kobo
           currency: "NGN",
@@ -174,6 +174,18 @@ const Checkout = () => {
                 required
               />
             </div>
+
+            <div>
+              <input
+                type="text"
+                name="email"
+                value={billing.email}
+                onChange={handleChange}
+                className="w-full border rounded p-2 mb-2  border-gray-300 placeholder-gray-500"
+                placeholder="Email address"
+                required
+              />
+            </div>
             <div className="flex flex-col md:flex-row gap-2">
               <input
                 type="text"
@@ -231,7 +243,7 @@ const Checkout = () => {
 
             <button
               type="submit"
-              className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold mt-4 hover:bg-gray-800 transition"
+              className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold mt-4  transition"
               disabled={loading}
             >
               {loading ? "Processing..." : "Pay now"}

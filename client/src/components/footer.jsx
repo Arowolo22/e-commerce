@@ -92,7 +92,7 @@ const Footer = () => {
         <hr className="my-8 border-gray-700" />
         {/* Copyright */}
         <div className="text-center text-sm text-white">
-          © 2025 Vogue Vault. All rights reserved
+           2025 Vogue Vault. All rights reserved
         </div>
       </div>
     </footer>
