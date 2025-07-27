@@ -1,7 +1,7 @@
 import React from "react";
 import Products from "../components/products";
-import Navbar from "../components/navbar";
-import Footer from "../components/footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import Hero from "../components/hero";
 import { useParams } from "react-router-dom";
 
