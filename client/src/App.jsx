@@ -9,7 +9,7 @@ import NotFound from "./pages/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/cart";
-import Search from "./pages/search";
+import Search from "./pages/Search";
 import Checkout from "./pages/Checkout";
 
 const ScrollToTop = () => {
