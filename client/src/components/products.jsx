@@ -23,7 +23,7 @@ const ProductList = ({ selectedCategory = "all" }) => {
 
     try {
       const mapped = mapCategory[category.toLowerCase()] || "all"; // Fixed: was "a", now "all"
-      let url = "http://localhost:5000/api/products";
+      let url = "https://e-commerce-1-aiq5.onrender.com/api/products";
 
       if (mapped !== "all") {
         url += `?category=${mapped}`;

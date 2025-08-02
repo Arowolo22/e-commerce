@@ -19,7 +19,7 @@ const Search = () => {
     try {
       // backend search endpoint
       const res = await axios.get(
-        `http://localhost:5000/api/products/search?q=${encodeURIComponent(
+        `https://e-commerce-1-aiq5.onrender.com/api/products/search?q=${encodeURIComponent(
           query
         )}`
       );

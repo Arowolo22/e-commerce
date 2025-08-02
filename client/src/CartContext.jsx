@@ -11,7 +11,7 @@ export const CartProvider = ({ children }) => {
   // Fetch cart count from backend
   const fetchCartCount = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/cart");
+      const res = await axios.get("https://e-commerce-1-aiq5.onrender.com/api/cart");
       setCartCount(res.data.cartItems.length);
     } catch (err) {
       console.log(err);

@@ -27,7 +27,7 @@ const Checkout = () => {
   const fetchCart = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/cart");
+      const res = await axios.get("https://e-commerce-1-aiq5.onrender.com/api/cart");
       setCartItems(res.data.cartItems);
       setTotal(res.data.total);
     } catch (err) {

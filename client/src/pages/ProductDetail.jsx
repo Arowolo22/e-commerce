@@ -20,7 +20,7 @@ const ProductDetails = () => {
     const fetchProduct = async () => {
       try {
         // send GET request to fetch product by ID
-        const res = await axios.get(`http://localhost:5000/api/products/${id}`); // replace with your backend URL
+        const res = await axios.get(`https://e-commerce-1-aiq5.onrender.com/api/products/${id}`); // replace with your backend URL
         setProduct(res.data); // set product in state
         setLoading(false); // turn off loading
       } catch (error) {
