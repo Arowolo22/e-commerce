@@ -16,7 +16,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/cart";
 import Search from "./pages/Search";
 import Checkout from "./pages/Checkout";
-import MobileDebug from "./components/MobileDebug";
+// import MobileDebug from "./components/MobileDebug";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
