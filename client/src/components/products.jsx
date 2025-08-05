@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // Added axios import
 import { useNavigate } from "react-router-dom";
-
+import api from "../utils/api";
 
 // Map frontend category (used in buttons/nav) to backend format
 const mapCategory = {
@@ -32,8 +31,10 @@ const ProductList = ({ selectedCategory = "all" }) => {
       console.log(`Fetching products for category: ${mapped} (${category})`);
       console.log("Fetching products from:", url);
 
-      // Using axios as mentioned in your description
-      const response = await axios.get(url);
+      // Using api utility for better mobile handling
+      const response = await api.get(
+        url.replace("https://e-commerce-1-aiq5.onrender.com", "")
+      );
       const data = response.data;
 
       setProducts(data);

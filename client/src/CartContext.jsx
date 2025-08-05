@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
+import api from "./utils/api";
 
 const CartContext = createContext();
 
@@ -11,7 +11,7 @@ export const CartProvider = ({ children }) => {
   // Fetch cart count from backend
   const fetchCartCount = async () => {
     try {
-      const res = await axios.get("https://e-commerce-1-aiq5.onrender.com/api/cart");
+      const res = await api.get("/api/cart");
       setCartCount(res.data.cartItems.length);
     } catch (err) {
       console.log(err);

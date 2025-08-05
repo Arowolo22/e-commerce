@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useCart } from "../CartContext";
 import { useNavigate } from "react-router-dom";
+import api from "../utils/api";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -16,7 +16,7 @@ const Cart = () => {
   const fetchCart = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("https://e-commerce-1-aiq5.onrender.com/api/cart");
+      const res = await api.get("/api/cart");
       setCartItems(res.data.cartItems);
       setTotal(res.data.total);
       await fetchCartCount();
@@ -35,7 +35,7 @@ const Cart = () => {
   const updateQuantity = async (id, quantity, selectedSize) => {
     if (quantity < 1) return;
     try {
-      await axios.put(`http://localhost:5000/api/cart/update/${id}`, {
+      await api.put(`/api/cart/update/${id}`, {
         quantity,
         selectedSize,
       });
@@ -49,7 +49,7 @@ const Cart = () => {
   // Delete item
   const deleteItem = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cart/delete/${id}`);
+      await api.delete(`/api/cart/delete/${id}`);
       fetchCart();
       await fetchCartCount();
     } catch (err) {
@@ -60,7 +60,7 @@ const Cart = () => {
   // Clear cart
   const clearCart = async () => {
     try {
-      await axios.post("http://localhost:5000/api/cart/clear");
+      await api.post("/api/cart/clear");
       fetchCart();
       await fetchCartCount();
     } catch (err) {
@@ -102,7 +102,7 @@ const Cart = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <button
-                      className="border px-2 py-1 rounded"
+                      className="border px-3 py-2 rounded text-lg min-w-[40px] min-h-[40px] flex items-center justify-center touch-manipulation"
                       onClick={() =>
                         updateQuantity(
                           item._id,
@@ -110,10 +110,14 @@ const Cart = () => {
                           item.selectedSize
                         )
                       }
-                    ></button>
-                    <span className="px-2">{item.quantity}</span>
+                    >
+                      -
+                    </button>
+                    <span className="px-4 py-2 text-lg font-medium">
+                      {item.quantity}
+                    </span>
                     <button
-                      className="border px-2 py-1 rounded"
+                      className="border px-3 py-2 rounded text-lg min-w-[40px] min-h-[40px] flex items-center justify-center touch-manipulation"
                       onClick={() =>
                         updateQuantity(
                           item._id,
@@ -126,10 +130,10 @@ const Cart = () => {
                     </button>
 
                     <button
-                      className="ml-4 text-red-500 hover:text-red-700"
+                      className="ml-4 text-red-500 hover:text-red-700 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center touch-manipulation"
                       onClick={() => deleteItem(item._id)}
                     >
-                      <span role="img" aria-label="delete">
+                      <span role="img" aria-label="delete" className="text-xl">
                         🗑️
                       </span>
                     </button>

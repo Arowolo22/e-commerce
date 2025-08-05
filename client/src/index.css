@@ -1,15 +1,43 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 @import "tailwindcss";
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation;
 }
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', sans-serif;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Inter", sans-serif;
 }
+
 p {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  button,
+  input,
+  select,
+  textarea {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  /* Ensure buttons are large enough for touch */
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }

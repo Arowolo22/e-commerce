@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams, } from "react-router-dom"; // to get the product ID from the URL
-import axios from "axios"; // for API requests
+import { useParams } from "react-router-dom"; // to get the product ID from the URL
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useCart } from "../CartContext";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
+import api from "../utils/api";
 
 const ProductDetails = () => {
   const { id } = useParams(); // extract product ID from URL
- 
+
   const [product, setProduct] = useState(null); // state to hold fetched product
   const [loading, setLoading] = useState(true); // loading state
   const [selectedSize, setSelectedSize] = useState(""); // selected size from dropdown
@@ -20,7 +20,7 @@ const ProductDetails = () => {
     const fetchProduct = async () => {
       try {
         // send GET request to fetch product by ID
-        const res = await axios.get(`https://e-commerce-1-aiq5.onrender.com/api/products/${id}`); // replace with your backend URL
+        const res = await api.get(`/api/products/${id}`); // replace with your backend URL
         setProduct(res.data); // set product in state
         setLoading(false); // turn off loading
       } catch (error) {
@@ -47,11 +47,11 @@ const ProductDetails = () => {
         selectedSize,
         quantity,
       };
-      await axios.post("http://localhost:5000/api/cart/add", cartItem);
+      await api.post("/api/cart/add", cartItem);
       await fetchCartCount();
       // Optionally show a confirmation message
-      
-      toast.success("Product added to cart")
+
+      toast.success("Product added to cart");
       // Do NOT navigate to cart page
     } catch (error) {
       toast.error("Failed to add to cart");
@@ -129,10 +129,9 @@ const ProductDetails = () => {
             {/* add to cart button */}
             <button
               onClick={handleAddToCart}
-              className="bg-black text-white px-6 w-full  py-3 rounded-lg  transition duration-300"
+              className="bg-black text-white px-6 w-full py-4 rounded-lg transition duration-300 min-h-[56px] touch-manipulation text-lg font-semibold"
             >
               Add to Cart
-              
             </button>
           </div>
         </div>

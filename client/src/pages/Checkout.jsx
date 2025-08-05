@@ -27,7 +27,9 @@ const Checkout = () => {
   const fetchCart = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("https://e-commerce-1-aiq5.onrender.com/api/cart");
+      const res = await axios.get(
+        "https://e-commerce-1-aiq5.onrender.com/api/cart"
+      );
       setCartItems(res.data.cartItems);
       setTotal(res.data.total);
     } catch (err) {
@@ -64,65 +66,96 @@ const Checkout = () => {
       toast.error("Please fill in all details.");
       return;
     }
-    // Paystack inline payment
-    const handler =
-      window.PaystackPop && window.PaystackPop.setup
-        ? window.PaystackPop
-        : window.Paystack;
-    if (handler && handler.setup) {
-      handler
-        .setup({
-          key: PAYSTACK_PUBLIC_KEY,
-          email: billing.email,
-          amount: total * 100, // kobo
-          currency: "NGN",
-          ref: String(Date.now()),
-          metadata: {
-            custom_fields: [
-              {
-                display_name: "Full Name",
-                variable_name: "full_name",
-                value: billing.firstName + " " + billing.lastName,
+
+    // Show loading state
+    setLoading(true);
+
+    try {
+      // Wait a bit for Paystack script to load on mobile
+      setTimeout(() => {
+        // Paystack inline payment
+        const handler =
+          window.PaystackPop && window.PaystackPop.setup
+            ? window.PaystackPop
+            : window.Paystack;
+
+        if (handler && handler.setup) {
+          handler
+            .setup({
+              key: PAYSTACK_PUBLIC_KEY,
+              email: billing.email,
+              amount: (total + shippingFee) * 100, // kobo - include shipping fee
+              currency: "NGN",
+              ref: String(Date.now()),
+              metadata: {
+                custom_fields: [
+                  {
+                    display_name: "Full Name",
+                    variable_name: "full_name",
+                    value: billing.firstName + " " + billing.lastName,
+                  },
+                  {
+                    display_name: "Phone",
+                    variable_name: "phone",
+                    value: billing.phone,
+                  },
+                  {
+                    display_name: "Address",
+                    variable_name: "address",
+                    value: billing.address,
+                  },
+                ],
               },
-              {
-                display_name: "Phone",
-                variable_name: "phone",
-                value: billing.phone,
+              callback: function (response) {
+                setLoading(false);
+                toast.success(
+                  "Payment complete! Reference: " + response.reference
+                );
+                // Optionally, redirect or clear cart here
               },
-              {
-                display_name: "Address",
-                variable_name: "address",
-                value: billing.address,
+              onClose: function () {
+                setLoading(false);
+                toast.error("Payment window closed");
               },
-            ],
-          },
-          callback: function (response) {
-            toast.success("Payment complete! Reference: " + response.reference);
-            // Optionally, redirect or clear cart here
-          },
-          onClose: function () {
-            toast.error("Payment window closed");
-          },
-        })
-        .openIframe();
-    } else {
-      // fallback: redirect to paystack payment page
-      const paystackUrl = `https://paystack.com/pay/YOUR_SLUG?amount=${
-        total * 100
-      }&email=${encodeURIComponent(billing.email)}`;
-      window.location.href = paystackUrl;
+            })
+            .openIframe();
+        } else {
+          setLoading(false);
+          toast.error("Payment system not ready. Please try again.");
+          console.error("Paystack handler not available");
+        }
+      }, 500); // Small delay for mobile devices
+    } catch (error) {
+      setLoading(false);
+      toast.error("Payment failed. Please try again.");
+      console.error("Payment error:", error);
     }
   };
 
   // Load Paystack script
   useEffect(() => {
-    if (!window.PaystackPop && !document.getElementById("paystack-script")) {
-      const script = document.createElement("script");
-      script.id = "paystack-script";
-      script.src = "https://js.paystack.co/v1/inline.js";
-      script.async = true;
-      document.body.appendChild(script);
-    }
+    const loadPaystackScript = () => {
+      if (!window.PaystackPop && !document.getElementById("paystack-script")) {
+        const script = document.createElement("script");
+        script.id = "paystack-script";
+        script.src = "https://js.paystack.co/v1/inline.js";
+        script.async = true;
+        script.onload = () => {
+          console.log("Paystack script loaded successfully");
+        };
+        script.onerror = () => {
+          console.error("Failed to load Paystack script");
+        };
+        document.body.appendChild(script);
+      }
+    };
+
+    // Load script immediately
+    loadPaystackScript();
+
+    // Also try loading after a short delay for mobile devices
+    const timer = setTimeout(loadPaystackScript, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -243,7 +276,7 @@ const Checkout = () => {
 
             <button
               type="submit"
-              className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold mt-4  transition"
+              className="w-full bg-black text-white py-4 rounded-lg text-lg font-semibold mt-4 transition min-h-[56px] touch-manipulation"
               disabled={loading}
             >
               {loading ? "Processing..." : "Pay now"}
