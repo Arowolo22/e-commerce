@@ -24,7 +24,7 @@ export const CartProvider = ({ children }) => {
     const timer = setTimeout(() => {
       fetchCartCount();
     }, 1000);
-    
+
     return () => clearTimeout(timer);
   }, []);
 
