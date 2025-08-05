@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import axios from "axios";
 import toast from "react-hot-toast";
+import api from "../utils/api";
 
 const PAYSTACK_PUBLIC_KEY = "pk_test_a99ba50a93a9e9bcc97324eeb9baaf060ef107ab";
 
@@ -27,9 +27,7 @@ const Checkout = () => {
   const fetchCart = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        "https://e-commerce-1-aiq5.onrender.com/api/cart"
-      );
+      const res = await api.get("/api/cart");
       setCartItems(res.data.cartItems);
       setTotal(res.data.total);
     } catch (err) {

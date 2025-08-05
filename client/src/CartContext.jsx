@@ -14,13 +14,18 @@ export const CartProvider = ({ children }) => {
       const res = await api.get("/api/cart");
       setCartCount(res.data.cartItems.length);
     } catch (err) {
-      console.log(err);
+      console.log("Cart fetch error:", err);
       setCartCount(0);
     }
   };
 
   useEffect(() => {
-    fetchCartCount();
+    // Delay the initial fetch to avoid blocking the app load
+    const timer = setTimeout(() => {
+      fetchCartCount();
+    }, 1000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   return (
