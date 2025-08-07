@@ -21,7 +21,7 @@ const Checkout = () => {
     phone: "",
     address: "",
   });
-  const [shippingFee] = useState(100); // Fixed shipping fee
+  const [shippingFee] = useState(1000); // Fixed shipping fee
 
   // Fetch cart items and total
   const fetchCart = async () => {
@@ -290,7 +290,7 @@ const Checkout = () => {
           {cartItems.length > 0 && (
             <>
               <div className="flex items-center gap-4 mb-4">
-                <img
+                <img  
                   src={cartItems[0].imageUrl}
                   alt={cartItems[0].name}
                   className="w-16 h-16 object-cover rounded"
