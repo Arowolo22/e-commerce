@@ -140,7 +140,7 @@ const Navbar = ({ selectedCategory }) => {
                 <button onClick={() => navigate("/cart")} className="relative">
                   <ShoppingBag size={22} />
                   {cartCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full px-1.5 py-0.5">
+                    <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full px-1 py-0.5 min-w-[16px] h-4 flex items-center justify-center">
                       {cartCount}
                     </span>
                   )}
@@ -154,14 +154,15 @@ const Navbar = ({ selectedCategory }) => {
               </div>
             </div>
             {/* Mobile right-side icons */}
-            <div className="flex md:hidden items-center space-x-4">
+            <div className="flex md:hidden items-center">
               <button onClick={() => navigate("/search")}>
                 <Search size={22} />
               </button>
               <button onClick={() => navigate("/cart")} className="relative">
                 <ShoppingBag size={22} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full px-1.5 py-0.5">
+                  <span className="absolute top-1 right-4  bg-black text-white
+                   text-xs rounded-full px-1 py-0.5 min-w-[16px] h-4 flex items-center justify-center">
                     {cartCount}
                   </span>
                 )}

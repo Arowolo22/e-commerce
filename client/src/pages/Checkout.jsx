@@ -21,7 +21,7 @@ const Checkout = () => {
     phone: "",
     address: "",
   });
-  const [shippingFee] = useState(1000); // Fixed shipping fee
+  const [shippingFee] = useState(100); // Fixed shipping fee
 
   // Fetch cart items and total
   const fetchCart = async () => {
@@ -267,7 +267,7 @@ const Checkout = () => {
               <div className="flex items-center border rounded p-2 justify-between  border-gray-300 placeholder-gray-500">
                 <span>Standard Shipping</span>
                 <span className="font-semibold">
-                  ₦{shippingFee.toLocaleString()}
+                  ${shippingFee.toLocaleString()}
                 </span>
               </div>
             </div>
@@ -309,22 +309,22 @@ const Checkout = () => {
                   </div>
                 </div>
                 <div className="ml-auto font-semibold text-lg">
-                  ₦{cartItems[0].price.toLocaleString()}
+                  ${cartItems[0].price.toLocaleString()}
                 </div>
               </div>
               <div className="border-t pt-4">
                 <div className="flex justify-between mb-2">
                   <span>Subtotal ({cartItems.length} items)</span>
-                  <span>₦{total.toLocaleString()}</span>
+                  <span>${total.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between mb-2">
                   <span>Shipping fee</span>
-                  <span>₦{shippingFee.toLocaleString()}</span>
+                  <span>${shippingFee.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center mt-4">
                   <span className="font-bold text-lg">Total</span>
                   <span className="font-bold text-2xl">
-                    ₦{(total + shippingFee).toLocaleString()}
+                    ${(total + shippingFee).toLocaleString()}
                   </span>
                 </div>
               </div>
