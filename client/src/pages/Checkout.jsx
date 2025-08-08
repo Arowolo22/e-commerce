@@ -9,7 +9,6 @@ const PAYSTACK_PUBLIC_KEY = "pk_test_a99ba50a93a9e9bcc97324eeb9baaf060ef107ab";
 const Checkout = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [billing, setBilling] = useState({
     firstName: "",
     lastName: "",
@@ -25,15 +24,12 @@ const Checkout = () => {
 
   // Fetch cart items and total
   const fetchCart = async () => {
-    setLoading(true);
     try {
       const res = await api.get("/api/cart");
       setCartItems(res.data.cartItems);
       setTotal(res.data.total);
     } catch (err) {
       console.error("Failed to fetch cart:", err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -64,9 +60,6 @@ const Checkout = () => {
       toast.error("Please fill in all details.");
       return;
     }
-
-    // Show loading state
-    setLoading(true);
 
     try {
       // Wait a bit for Paystack script to load on mobile
@@ -105,26 +98,22 @@ const Checkout = () => {
                 ],
               },
               callback: function (response) {
-                setLoading(false);
                 toast.success(
                   "Payment complete! Reference: " + response.reference
                 );
                 // Optionally, redirect or clear cart here
               },
               onClose: function () {
-                setLoading(false);
                 toast.error("Payment window closed");
               },
             })
             .openIframe();
         } else {
-          setLoading(false);
           toast.error("Payment system not ready. Please try again.");
           console.error("Paystack handler not available");
         }
       }, 500); // Small delay for mobile devices
     } catch (error) {
-      setLoading(false);
       toast.error("Payment failed. Please try again.");
       console.error("Payment error:", error);
     }
@@ -275,9 +264,8 @@ const Checkout = () => {
             <button
               type="submit"
               className="w-full bg-black text-white py-4 rounded-lg text-lg font-semibold mt-4 transition min-h-[56px] touch-manipulation"
-              disabled={loading}
             >
-              {loading ? "Processing..." : "Pay now"}
+              Pay now
             </button>
             <p className="text-xs text-center text-gray-500 mt-2">
               After clicking "Pay now", you will be redirected to Paystack to
@@ -290,7 +278,7 @@ const Checkout = () => {
           {cartItems.length > 0 && (
             <>
               <div className="flex items-center gap-4 mb-4">
-                <img  
+                <img
                   src={cartItems[0].imageUrl}
                   alt={cartItems[0].name}
                   className="w-16 h-16 object-cover rounded"

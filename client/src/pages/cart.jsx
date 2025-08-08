@@ -8,13 +8,11 @@ import api from "../utils/api";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
   const { fetchCartCount } = useCart();
   const navigate = useNavigate();
 
   // Fetch cart items
   const fetchCart = async () => {
-    setLoading(true);
     try {
       const res = await api.get("/api/cart");
       setCartItems(res.data.cartItems);
@@ -22,8 +20,6 @@ const Cart = () => {
       await fetchCartCount();
     } catch (err) {
       console.error("Failed to fetch cart:", err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -67,8 +63,6 @@ const Cart = () => {
       console.error("Failed to clear cart:", err);
     }
   };
-
-  if (loading) return <div className="p-8 text-center">Loading...</div>;
 
   return (
     <>
@@ -142,7 +136,6 @@ const Cart = () => {
                         aria-label="delete"
                         className="text-base text-black hover:text-red-700 sm:text-lg md:text-xl"
                       >
-                       
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24"

@@ -10,7 +10,6 @@ const ProductDetails = () => {
   const { id } = useParams(); // extract product ID from URL
 
   const [product, setProduct] = useState(null); // state to hold fetched product
-  const [loading, setLoading] = useState(true); // loading state
   const [selectedSize, setSelectedSize] = useState(""); // selected size from dropdown
   const [quantity, setQuantity] = useState(1); // selected quantity
   const { fetchCartCount } = useCart();
@@ -22,10 +21,8 @@ const ProductDetails = () => {
         // send GET request to fetch product by ID
         const res = await api.get(`/api/products/${id}`); // replace with your backend URL
         setProduct(res.data); // set product in state
-        setLoading(false); // turn off loading
       } catch (error) {
         console.error("Failed to fetch product:", error); // log error
-        setLoading(false); // even on error, stop loading
       }
     };
 
@@ -59,8 +56,7 @@ const ProductDetails = () => {
     }
   };
 
-  // show loading or error messages
-  if (loading) return <p>Loading...</p>;
+  // show error messages
   if (!product) return <p>Product not found</p>;
 
   return (
@@ -115,6 +111,7 @@ const ProductDetails = () => {
             )}
 
             {/* quantity input field */}
+
             <div className="mb-6">
               <label className="block font-medium mb-1">Quantity</label>
               <input

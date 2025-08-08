@@ -13,12 +13,12 @@ const mapCategory = {
 
 const ProductList = ({ selectedCategory = "all" }) => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Fetch products from backend with optional category filter
   const fetchProducts = async (category = "all") => {
-    setLoading(true);
+    // setLoading(true);
 
     try {
       const mapped = mapCategory[category.toLowerCase()] || "all"; // Fixed: was "a", now "all"
@@ -42,7 +42,7 @@ const ProductList = ({ selectedCategory = "all" }) => {
       console.error("Error fetching products:", err);
       setProducts([]);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -50,13 +50,13 @@ const ProductList = ({ selectedCategory = "all" }) => {
     fetchProducts(selectedCategory);
   }, [selectedCategory]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center p-8">
-        <p className="text-lg font-medium">Loading products...</p>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center p-8">
+  //       <p className="text-lg font-medium">Loading products...</p>
+  //     </div>
+  //   );
+  // }
 
   if (products.length === 0) {
     let msg = "No products found.";
